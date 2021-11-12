@@ -1,0 +1,141 @@
+.header {
+  background-color: #000;
+  opacity: 0.8;
+  color: #fff;
+}
+
+.header__title {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #ccc;
+}
+
+.header__login {
+  font-size: 1rem;
+  font-weight: 400;
+  color: #ccc;
+  cursor: pointer;
+  position: relative;
+}
+
+.header__login:hover .header__login--item {
+  display: block;
+}
+
+.header__login::after {
+  position: absolute;
+  display: block;
+  content: "";
+  width: 180px;
+  height: 20px;
+  background-color: transparent;
+  top: 20px;
+  left: 0;
+}
+
+.header__login--item {
+  position: absolute;
+  display: none;
+  top: 30px;
+  width: 180px;
+  padding-left: 0;
+  list-style: none;
+  background-color: #000;
+  border-radius: 4px;
+  z-index: 1;
+}
+
+.header__login--item li {
+  margin: 2px 0;
+  padding: 2px 8px;
+  text-align: left;
+}
+
+.header__login__link {
+  text-decoration: none;
+  color: #fff;
+}
+
+.header__login--item li:hover {
+  color: #ffca6e;
+}
+
+.header__login--item li:first-child {
+  margin: 4px 0;
+}
+
+.header__login--item li:last-child {
+  padding-bottom: 8px;
+}
+
+.header__img {
+  height: 60px;
+  width: 200px;
+}
+
+.header__icon {
+  font-size: 1.4rem;
+  margin-right: 8px;
+}
+
+.header__position {
+  position: relative;
+}
+
+.header__position--cart {
+  position: absolute;
+  top: -14px;
+  right: -6px;
+  height: 22px;
+  width: 22px;
+  color: #333;
+  background-color: #fff;
+  opacity: 0.9;
+  border-radius: 10px;
+}
+
+.header__icon--cart {
+  font-size: 2.2rem;
+  cursor: pointer;
+  color: #fff;
+  opacity: 0.9;
+}
+
+.header__input {
+  position: relative;
+}
+
+.header__input input {
+  height: 40px;
+  width: 100%;
+  padding-left: 16px;
+  /* outline: none; */
+  border: 1px solid #aaa;
+  border-radius: 4px;
+}
+
+.header__input--icon {
+  position: absolute;
+  top: 10px;
+  right: 0;
+  color: #333;
+}
+
+.header__menu {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.header__menu li:last-child {
+  background-color: red;
+  border-radius: 2px;
+}
+
+.menu__link {
+  text-decoration: none;
+  color: #fff;
+}
+
+.menu__link:hover {
+  color: #ffca6e;
+}
