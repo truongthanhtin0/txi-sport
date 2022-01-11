@@ -1,4 +1,9 @@
-import {CREATE_ACCOUNT, SET_ACCOUNT, GET_LIST_ACCOUNT} from "../constants";
+import {
+  CREATE_ACCOUNT,
+  SET_ACCOUNT,
+  GET_LIST_ACCOUNT,
+  LOGIN,
+} from "../constants";
 
 export function setAccount(params) {
   return {
@@ -10,6 +15,13 @@ export function setAccount(params) {
 export function createAccount(params) {
   return {
     type: CREATE_ACCOUNT,
+    payload: params,
+  };
+}
+
+export function login(params) {
+  return {
+    type: LOGIN,
     payload: params,
   };
 }

@@ -3,16 +3,19 @@ import {Button, Col, Container, Row} from "react-bootstrap";
 import {FcCheckmark} from "react-icons/fc";
 import {connect} from "react-redux";
 import Slider from "react-slick";
-import {toast, ToastContainer} from "react-toastify";
+import {ToastContainer} from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
 import {setCart} from "../../redux/actions/cart_action";
+import {toastSuccess} from "../../util/toast";
 import {getProductsDetail} from "./../../redux/actions/productsDetail_action";
 import history from "./../../util/history";
 import "./style.css";
 
 function ProductsDetail({getProductsDetail, productsDetail, match, setCart}) {
+  const [indexImg, setIndexImg] = useState(0);
+
   useEffect(() => {
     getProductsDetail({
       id: match.params.id,
@@ -32,32 +35,19 @@ function ProductsDetail({getProductsDetail, productsDetail, match, setCart}) {
     cssEase: "ease-in-out",
   };
 
-  const notifyCart = () =>
-    toast.success("Thêm vào giỏ hàng thành công!", {
-      position: "top-right",
-      autoClose: 2000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-    });
-
-  const [indexImg, setIndexImg] = useState(0);
-
   const handleSlideImg = (imgIndex) => {
     setIndexImg(imgIndex);
   };
 
-  const handleToCheckout = (productsDetail) => {
+  const handleProducts = (newProducts) => {
     let arrData = [];
-    const productItem = {...productsDetail, quantity: 1};
+    const productItem = {...newProducts, quantity: 1};
     const cartData = JSON.parse(localStorage.getItem("productsList"));
     if (cartData?.length) {
-      const findItem = cartData.find((item) => item.id === productsDetail.id);
+      const findItem = cartData.find((item) => item.id === newProducts.id);
       if (findItem) {
         const indexItem = cartData.findIndex(
-          (item) => item.id === productsDetail.id
+          (item) => item.id === newProducts.id
         );
         cartData.splice(indexItem, 1, {
           ...findItem,
@@ -68,28 +58,16 @@ function ProductsDetail({getProductsDetail, productsDetail, match, setCart}) {
     } else arrData.push(productItem);
     localStorage.setItem("productsList", JSON.stringify(arrData));
     setCart(arrData);
+  };
+
+  const handleToCheckout = (productsDetail) => {
+    handleProducts(productsDetail);
     history.push("/payment");
   };
 
   const handleAddToCart = (productsDetail) => {
-    let arrData = [];
-    const productItem = {...productsDetail, quantity: 1};
-    const cartData = JSON.parse(localStorage.getItem("productsList"));
-    if (cartData?.length) {
-      const findItem = cartData.find((item) => item.id === productsDetail.id);
-      if (findItem) {
-        const indexItem = cartData.findIndex(
-          (item) => item.id === productsDetail.id
-        );
-        cartData.splice(indexItem, 1, {
-          ...findItem,
-          quantity: parseInt(findItem.quantity) + 1,
-        });
-        arrData = [...cartData];
-      } else arrData = [...cartData, productItem];
-    } else arrData.push(productItem);
-    localStorage.setItem("productsList", JSON.stringify(arrData));
-    setCart(arrData);
+    handleProducts(productsDetail);
+    toastSuccess("Thêm giỏ hàng thành công!");
   };
 
   const renderImg = () => {
@@ -174,10 +152,7 @@ function ProductsDetail({getProductsDetail, productsDetail, match, setCart}) {
                 </Button>
                 <Button
                   className="btn btn-danger detail__button"
-                  onClick={() => {
-                    handleAddToCart(productsDetail);
-                    notifyCart();
-                  }}
+                  onClick={() => handleAddToCart(productsDetail)}
                 >
                   THÊM VÀO GIỎ HÀNG
                 </Button>

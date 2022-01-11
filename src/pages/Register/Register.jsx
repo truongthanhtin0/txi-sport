@@ -1,120 +1,120 @@
-import React, {useState, useEffect} from "react";
-import {Button, Col, Container, Form, Row} from "react-bootstrap";
+import {ErrorMessage, Field, Form, Formik} from "formik";
+import React, {useEffect} from "react";
+import {Button} from "react-bootstrap";
 import {connect} from "react-redux";
-import {toast, ToastContainer} from "react-toastify";
+import {ToastContainer} from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import * as Yup from "yup";
 import history from "../../util/history";
-import {createAccount} from "./../../redux/actions";
+import {toastError} from "../../util/toast";
+import {createAccount, getListAccount} from "./../../redux/actions";
 import "./style.css";
 
-function Register({createList, createAccount}) {
-  const [fullName, setFullName] = useState("");
-  const [userName, setUserName] = useState("");
-  const [password, setPassword] = useState("");
+function Register({createAccount, getList, getListAccount}) {
+  useEffect(() => {
+    getListAccount();
+  }, []);
 
-  const notifyRegisterSuccess = () =>
-    toast.info("Đăng ký thành công!", {
-      position: "top-right",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-    });
-
-  const notifyRegisterFail = () =>
-    toast.error("Tài khoản đã tồn tại!", {
-      position: "top-right",
-      autoClose: 2000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-    });
-
-  const handleClickRegister = () => {
-    if (!createList?.length) {
+  const handleClickRegister = (value) => {
+    if (!getList.length) {
       createAccount({
-        name: fullName,
-        userName: userName,
-        password: password,
+        name: value.name,
+        userName: value.userName,
+        password: value.password,
         role: "user",
       });
-      notifyRegisterSuccess();
-      setTimeout(() => {
-        history.push("/login");
-      }, 2000);
     } else {
-      const checkId = createList?.findIndex(
-        (item) => item.userName === userName
+      const accountFind = getList?.find(
+        (item) => item.userName === value.userName
       );
-      if (checkId === -1) {
+      if (!accountFind) {
         createAccount({
-          name: fullName,
-          userName: userName,
-          password: password,
+          name: value.name,
+          userName: value.userName,
+          password: value.password,
           role: "user",
         });
-        notifyRegisterSuccess();
-        setTimeout(() => {
-          history.push("/login");
-        }, 2000);
-      } else notifyRegisterFail();
+      } else {
+        toastError("Tài khoản đã tồn tại !");
+      }
     }
   };
   return (
-    <Container>
-      <Row>
-        <Col sm={12} className="mt-3">
-          <h4>ĐĂNG KÝ</h4>
-        </Col>
-        <Col sm={6} className="offset-sm-3">
-          <ToastContainer className="mt-3" />
-          <Form className="form">
-            <Form.Group className="mb-3" controlId="formBasicFullName">
-              <Form.Control
-                type="text"
-                placeholder="Họ và tên"
-                onChange={(e) => setFullName(e.target.value)}
-              />
-            </Form.Group>
-            <Form.Group className="mb-3" controlId="formBasicUserName">
-              <Form.Control
-                type="text"
-                placeholder="Tài khoản"
-                onChange={(e) => setUserName(e.target.value)}
-              />
-            </Form.Group>
-            <Form.Group className="mb-3" controlId="formBasicPassword">
-              <Form.Control
-                type="password"
-                placeholder="Mật khẩu"
-                onChange={(e) => setPassword(e.target.value)}
-              />
-            </Form.Group>
-            <Button variant="primary" onClick={() => handleClickRegister()}>
+    <section className="register">
+      <h4>ĐĂNG KÝ</h4>
+      <Formik
+        initialValues={{
+          name: "",
+          userName: "",
+          password: "",
+        }}
+        enableReinitialize
+        validationSchema={Yup.object({
+          name: Yup.string()
+            .required("Họ và tên không được để trống!")
+            .min(3, "Họ và tên không được ít hơn 3 kí tự")
+            .max(40, "Họ và tên không được quá 40 kí tự"),
+          userName: Yup.string()
+            .required("Tài khoản không được để trống!")
+            .min(3, "Tài khoản không được ít hơn 3 kí tự")
+            .max(30, "Tài khoản không được quá 30 kí tự"),
+          password: Yup.string()
+            .required("Mật khẩu không được để trống!")
+            .min(8, "Mật khẩu không được ít hơn 8 ký tự!")
+            .max(30, "Mật khẩu không được quá 30 kí tự"),
+        })}
+        onSubmit={(value) => handleClickRegister(value)}
+      >
+        <Form>
+          <div className="account__wrapper">
+            <label htmlFor="name">Họ và tên</label>
+            <Field id="name" type="text" name="name" />
+            <p>
+              <ErrorMessage name="name" />
+            </p>
+          </div>
+          <div className="account__wrapper">
+            <label htmlFor="userName">Tài khoản</label>
+            <Field id="userName" type="text" name="userName" />
+            <p>
+              <ErrorMessage name="userName" />
+            </p>
+          </div>
+          <div className="account__wrapper">
+            <label htmlFor="password">Mật khẩu</label>
+            <Field id="password" type="password" name="password" />
+            <p>
+              <ErrorMessage name="password" />
+            </p>
+          </div>
+          <p className="account__description">
+            Bạn đã có tài khoản?
+            <span onClick={() => history.push("/login")}> Đăng nhập</span>
+          </p>
+          <div>
+            <Button htmlType="submit" type="primary">
               Đăng ký
             </Button>
-          </Form>
-        </Col>
-      </Row>
-    </Container>
+          </div>
+        </Form>
+      </Formik>
+      <ToastContainer className="mt-3" />
+    </section>
   );
 }
 
 // export default Register;
 const mapStateToProps = (state) => {
-  const {createList} = state.accountReducer;
+  const {getList} = state.accountReducer;
   return {
-    createList,
+    getList,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
     createAccount: (params) => dispatch(createAccount(params)),
+    getListAccount: (params) => dispatch(getListAccount(params)),
   };
 };
 

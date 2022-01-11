@@ -1,85 +1,91 @@
-import React, {useState, useEffect} from "react";
-import {Button, Col, Container, Form, Row} from "react-bootstrap";
+import {ErrorMessage, Field, Form, Formik} from "formik";
+import React, {useEffect} from "react";
+import {Button} from "react-bootstrap";
 import {connect} from "react-redux";
-import {toast, ToastContainer} from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import {setAccount, getListAccount} from "../../redux/actions";
+import {ToastContainer} from "react-toastify";
+import * as Yup from "yup";
+import {getListAccount, setAccount} from "../../redux/actions";
 import history from "../../util/history";
+import {toastError, toastSuccess} from "./../../util/toast";
 import "./style.css";
 
 function Login({setAccount, getList, getListAccount}) {
-  const [userName, setUserName] = useState("");
-  const [password, setPassword] = useState("");
-
   useEffect(() => {
     getListAccount();
   }, []);
 
-  const notifyExist = () =>
-    toast.error("Tài khoản không tồn tại!", {
-      position: "top-right",
-      autoClose: 2000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-    });
-
-  const notifyFail = () =>
-    toast.error("Sai tài khoản hoặc mật khẩu!", {
-      position: "top-right",
-      autoClose: 2000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-    });
-
-  const handleOnclickLogin = () => {
-    if (getList.length) {
-      const checkId = getList?.findIndex((item) => item.userName === userName);
-      if (checkId === -1) notifyExist();
-      else {
-        if (getList[checkId]?.password === password) {
-          setAccount(getList[checkId]);
+  const handleOnclickLogin = (value) => {
+    if (!getList.length) {
+      toastError("Tài khoản không tồn tại !");
+    } else {
+      const accountFind = getList.find(
+        (item) => item.userName === value.userName
+      );
+      if (!accountFind) {
+        toastError("Tài khoản không tồn tại !");
+      } else {
+        if (accountFind.password === value.password) {
+          localStorage.removeItem("productsList");
+          localStorage.setItem("info", JSON.stringify(accountFind));
+          setAccount(accountFind);
           history.push("/");
-        } else notifyFail();
+          toastSuccess("Đăng nhập thành công !");
+        } else {
+          toastError("Sai tài khoản hoặc mật khẩu !");
+        }
       }
-    } else notifyExist();
+    }
   };
 
   return (
-    <Container>
-      <Row>
-        <Col sm={12} className="mt-3">
-          <h4>ĐĂNG NHẬP</h4>
-        </Col>
-        <Col sm={6} className="offset-sm-3">
-          <ToastContainer className="mt-3" />
-          <Form className="form">
-            <Form.Group className="mb-3" controlId="formBasicUserName">
-              <Form.Control
-                type="text"
-                placeholder="Tài khoản"
-                onChange={(e) => setUserName(e.target.value)}
-              />
-            </Form.Group>
-            <Form.Group className="mb-3" controlId="formBasicPassword">
-              <Form.Control
-                type="password"
-                placeholder="Mật khẩu"
-                onChange={(e) => setPassword(e.target.value)}
-              />
-            </Form.Group>
-            <Button variant="primary" onClick={handleOnclickLogin}>
+    <section className="login">
+      <h4>ĐĂNG NHẬP</h4>
+      <Formik
+        initialValues={{
+          userName: "",
+          password: "",
+        }}
+        enableReinitialize
+        validationSchema={Yup.object({
+          userName: Yup.string()
+            .required("Tài khoản không được để trống!")
+            .min(3, "Tài khoản không được ít hơn 3 kí tự")
+            .max(30, "Tài khoản không được quá 30 kí tự"),
+          password: Yup.string()
+            .required("Mật khẩu không được để trống!")
+            .min(8, "Mật khẩu không được ít hơn 8 ký tự!")
+            .max(30, "Mật khẩu không được quá 30 kí tự"),
+        })}
+        onSubmit={(value) => handleOnclickLogin(value)}
+      >
+        <Form>
+          <div className="account__wrapper">
+            <label htmlFor="userName">Tài khoản</label>
+            <Field id="userName" type="text" name="userName" />
+            <p>
+              <ErrorMessage name="userName" />
+            </p>
+          </div>
+          <div className="account__wrapper">
+            <label htmlFor="password">Mật khẩu</label>
+            <Field id="password" type="password" name="password" />
+            <p>
+              <ErrorMessage name="password" />
+            </p>
+          </div>
+          <p className="account__description">
+            Bạn chưa có tài khoản?
+            <span onClick={() => history.push("/register")}> Đăng ký</span>
+          </p>
+          <div>
+            <Button htmlType="submit" type="primary">
               Đăng nhập
             </Button>
-          </Form>
-        </Col>
-      </Row>
-    </Container>
+          </div>
+        </Form>
+      </Formik>
+      <ToastContainer />
+    </section>
   );
 }
 

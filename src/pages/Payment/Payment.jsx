@@ -1,57 +1,33 @@
+import {ErrorMessage, Field, Form, Formik} from "formik";
 import React, {useState} from "react";
-import {Button, Col, Container, Form, InputGroup, Row} from "react-bootstrap";
+import {Button, Col, Container, Row} from "react-bootstrap";
 import {BiChevronLeft, BiChevronRight} from "react-icons/bi";
 import {connect} from "react-redux";
 import {Link} from "react-router-dom";
-import history from "../../util/history";
-import {createBill} from "./../../redux/actions/payments_action";
+import * as Yup from "yup";
+import {dateTimeNow} from "../../util/dateTime";
+import {createBill} from "./../../redux/actions";
 import "./style.css";
 
 function Payment({createBill}) {
-  const productsLocal = JSON.parse(localStorage.getItem("productsList"));
+  const [productsLocal, setProductsLocal] = useState(
+    JSON.parse(localStorage.getItem("productsList"))
+  );
+  const [info, setInfo] = useState(JSON.parse(localStorage.getItem("info")));
 
-  const [valueName, setValueName] = useState("");
-  const [valueEmail, setValueEmail] = useState("");
-  const [valuePhone, setValuePhone] = useState("");
-  const [valueAddress, setValueAddress] = useState("");
+  const phoneRegExp =
+    /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 
-  const [validated, setValidated] = useState(false);
-
-  const handleSubmit = (event) => {
-    const form = event.currentTarget;
-    if (form.checkValidity() === false) {
-      event.preventDefault();
-      event.stopPropagation();
-    }
-    setValidated(true);
+  const handleSubmit = (value) => {
     createBill({
-      name: valueName,
-      email: valueEmail,
-      phone: valuePhone,
-      address: valueAddress,
+      name: value.name,
+      email: value.email,
+      phone: value.phone,
+      address: value.address,
       products: productsLocal,
+      datetime: dateTimeNow(),
       status: "Đang duyệt",
     });
-
-    localStorage.removeItem("productsList");
-
-    history.push("/bill");
-    // else {
-    //   setValidated(true);
-
-    //   createBill({
-    //     name: valueName,
-    //     email: valueEmail,
-    //     phone: valuePhone,
-    //     address: valueAddress,
-    //     products: productsLocal,
-    //     status: "Đang duyệt",
-    //   });
-
-    //   localStorage.removeItem("productsList");
-
-    //   history.push("/bill");
-    // }
   };
 
   const handleSumItem = (item) => {
@@ -79,103 +55,82 @@ function Payment({createBill}) {
             <p>Thông tin giao hàng</p>
           </div>
           <h6 className="checkout__title">Thông tin giao hàng</h6>
-          <div className="d-flex align-items-center checkout__description1">
-            <p className="me-2">Bạn đã có tài khoản</p>
-            <Link to="/login" className="text-decoration-none">
-              Đăng nhập
-            </Link>
-          </div>
-          <Form noValidate validated={validated} onSubmit={handleSubmit}>
-            <Form.Group className="mb-3" controlId="formBasicName">
-              <InputGroup name="" hasValidation>
-                <Form.Control
-                  type="text"
-                  placeholder="Họ và tên"
-                  required
-                  value={valueName}
-                  onChange={(e) => setValueName(e.target.value)}
-                />
-                <Form.Control.Feedback type="invalid">
-                  Vui lòng nhập họ tên.
-                </Form.Control.Feedback>
-              </InputGroup>
-            </Form.Group>
-            <Form.Group className="mb-3 d-flex" controlId="formBasicEmail">
-              <InputGroup name="" hasValidation>
-                <Form.Control
-                  className="me-3 w-60"
-                  type="email"
-                  placeholder="Email"
-                  required
-                  value={valueEmail}
-                  onChange={(e) => setValueEmail(e.target.value)}
-                />
-                <Form.Control.Feedback type="invalid">
-                  Vui lòng nhập email.
-                </Form.Control.Feedback>
-              </InputGroup>
-              <InputGroup name="" hasValidation>
-                <Form.Control
-                  type="text"
-                  placeholder="Số điện thoại"
-                  required
-                  value={valuePhone}
-                  onChange={(e) => setValuePhone(e.target.value)}
-                />
-                <Form.Control.Feedback type="invalid">
-                  Vui lòng nhập số điện thoại.
-                </Form.Control.Feedback>
-              </InputGroup>
-            </Form.Group>
-            <Form.Group className="mb-3" controlId="formBasicPassword">
-              <InputGroup name="" hasValidation>
-                <Form.Control
-                  type="text"
-                  placeholder="Địa chỉ"
-                  required
-                  value={valueAddress}
-                  onChange={(e) => setValueAddress(e.target.value)}
-                />
-                <Form.Control.Feedback type="invalid">
-                  Vui lòng nhập địa chỉ.
-                </Form.Control.Feedback>
-              </InputGroup>
-            </Form.Group>
-            <h6 className="checkout__title">Phương thức thanh toán</h6>
-            <Form.Group as={Row} className="mb-3">
-              <Col>
-                <Form.Check
-                  type="radio"
-                  label="Chuyển khoản - FREE SHIP"
-                  name="formHorizontalRadios"
-                  className="checkout__radioButton"
-                  disabled={true}
-                  feedback="Chọn hình thức thanh toán."
-                  feedbackType="invalid"
-                />
-                <Form.Check
-                  type="radio"
-                  label="Thử giày - Thanh toán tại nhà (COD)"
-                  name="formHorizontalRadios"
-                  className="checkout__radioButton"
-                  required
-                  feedback="Chọn hình thức thanh toán."
-                  feedbackType="invalid"
-                />
-              </Col>
-            </Form.Group>
-            <div className="checkout__wrapper">
-              <div className="d-flex align-items-center">
-                <BiChevronLeft className="text-primary" />
-                <Link to="/cart" className="text-decoration-none">
-                  Giỏ hàng
-                </Link>
-              </div>
-              <Button variant="primary" type="submit">
-                Hoàn tất thanh toán
-              </Button>
+          {!info && (
+            <div className="d-flex align-items-center checkout__description1">
+              <p className="me-2">Bạn đã có tài khoản</p>
+              <Link to="/login" className="text-decoration-none">
+                Đăng nhập
+              </Link>
             </div>
-          </Form>
+          )}
+          <Formik
+            initialValues={{
+              name: info?.name || "",
+              email: "",
+              phone: "",
+              address: "",
+            }}
+            enableReinitialize
+            validationSchema={Yup.object({
+              name: Yup.string()
+                .required("Tài khoản không được để trống!")
+                .min(3, "Tài khoản không được ít hơn 3 kí tự")
+                .max(30, "Tài khoản không được quá 30 kí tự"),
+              email: Yup.string()
+                .required("Email không được để trống!")
+                .email("Email không đúng định dạng!"),
+              phone: Yup.string()
+                .required("Số điện thoại không được để trống!")
+                .matches(phoneRegExp, "Số điện thoại không đúng định dạng!"),
+              address: Yup.string()
+                .required("Địa chỉ không được để trống!")
+                .min(10, "Địa chỉ không được ít hơn 10 kí tự")
+                .max(40, "Địa chỉ không được quá 30 kí tự"),
+            })}
+            onSubmit={(value) => handleSubmit(value)}
+          >
+            <Form>
+              <div className="payment__wrapper">
+                <label htmlFor="name">Họ và tên</label>
+                <Field id="name" type="text" name="name" />
+                <p>
+                  <ErrorMessage name="name" />
+                </p>
+              </div>
+              <div className="payment__wrapper">
+                <label htmlFor="email">Email</label>
+                <Field id="email" type="email" name="email" />
+                <p>
+                  <ErrorMessage name="email" />
+                </p>
+              </div>
+              <div className="payment__wrapper">
+                <label htmlFor="phone">Số điện thoại</label>
+                <Field id="phone" type="text" name="phone" />
+                <p>
+                  <ErrorMessage name="phone" />
+                </p>
+              </div>
+              <div className="payment__wrapper">
+                <label htmlFor="address">Địa chỉ</label>
+                <Field id="address" type="text" name="address" />
+                <p>
+                  <ErrorMessage name="address" />
+                </p>
+              </div>
+              <div className="d-flex align-items-center justify-content-between">
+                <div className="d-flex align-items-center">
+                  <BiChevronLeft className="text-primary" />
+                  <Link to="/cart" className="text-decoration-none">
+                    Giỏ hàng
+                  </Link>
+                </div>
+                <Button htmlType="submit" type="primary">
+                  Hoàn tất thanh toán
+                </Button>
+              </div>
+            </Form>
+          </Formik>
         </Col>
         <Col className="py-5 checkout__right border-start border-2">
           <div className="checkout__border">

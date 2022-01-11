@@ -1,5 +1,7 @@
 import axios from "axios";
 import {put, takeEvery} from "redux-saga/effects";
+import history from "../../util/history";
+import {toastSuccess} from "../../util/toast";
 import {
   CREATE_ACCOUNT_SUCCESS,
   CREATE_ACCOUNT_FAIL,
@@ -21,6 +23,8 @@ function* createAccountSaga(action) {
       type: CREATE_ACCOUNT_SUCCESS,
       payload: data,
     });
+    toastSuccess("Đăng ký thành công !");
+    history.push("/login");
   } catch (error) {
     yield put({
       type: CREATE_ACCOUNT_FAIL,
@@ -28,6 +32,24 @@ function* createAccountSaga(action) {
     });
   }
 }
+
+// function* loginSaga(action) {
+//   try {
+//     const response = yield axios.get(`${url}/accounts`, {...action.payload});
+
+//     const data = response.data;
+
+//     yield put({
+//       type: CREATE_ACCOUNT_SUCCESS,
+//       payload: data,
+//     });
+//   } catch (error) {
+//     yield put({
+//       type: CREATE_ACCOUNT_FAIL,
+//       payload: error,
+//     });
+//   }
+// }
 
 function* getListAccountSaga(action) {
   try {

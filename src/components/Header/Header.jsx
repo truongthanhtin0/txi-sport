@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import {Col, Container, Row} from "react-bootstrap";
 import {BiChevronDown, BiSearchAlt2} from "react-icons/bi";
 import {BsFillPersonFill} from "react-icons/bs";
@@ -6,14 +6,14 @@ import {TiShoppingCart} from "react-icons/ti";
 import {connect} from "react-redux";
 import {Link} from "react-router-dom";
 import logo from "../../assets/image/TXI-SPORT.png";
-import {setAccount} from "../../redux/actions/account_action";
-import {setCart} from "../../redux/actions/cart_action";
+import {setCart, setAccount} from "../../redux/actions";
 import "./style.css";
 
 function Header({cart, account, setAccount}) {
-  console.log("Log :  cart", cart);
-  const cartLocal = JSON.parse(localStorage.getItem("productsList"));
-  console.log("Log :  cartLocal", cartLocal);
+  const [cartLocal, setCartLocal] = useState(
+    JSON.parse(localStorage.getItem("productsList"))
+  );
+  const [info, setInfo] = useState(JSON.parse(localStorage.getItem("info")));
 
   return (
     <Container fluid className="header">
@@ -25,7 +25,7 @@ function Header({cart, account, setAccount}) {
             </span>
           </Col>
           <Col xs={6}>
-            {!account.name ? (
+            {!info ? (
               <div className="d-flex align-items-center float-end header__login">
                 <BsFillPersonFill className="header__icon" />
                 <span>Tài khoản</span>
@@ -49,7 +49,7 @@ function Header({cart, account, setAccount}) {
               </div>
             ) : (
               <div className="d-flex align-items-center float-end header__login">
-                <span>{`Hi, ${account.name}`}</span>
+                <span>{`Hi, ${account?.name || info?.name}`}</span>
 
                 <ul className="header__login--item">
                   <li>Giỏ hàng</li>
@@ -57,7 +57,8 @@ function Header({cart, account, setAccount}) {
                   <li>Tra cứu đơn hàng</li>
                   <li
                     onClick={() => {
-                      localStorage.removeItem("login");
+                      localStorage.removeItem("info");
+                      setInfo();
                       setAccount({});
                     }}
                   >
@@ -92,7 +93,7 @@ function Header({cart, account, setAccount}) {
                   className="text-decoration-none header__position"
                 >
                   <TiShoppingCart className="header__icon--cart" />
-                  {cartLocal?.length > 0 && (
+                  {(cart?.length > 0 || cartLocal?.length > 0) && (
                     <div className="header__position--cart">
                       {cart.length || cartLocal.length}
                     </div>

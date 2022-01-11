@@ -80,3 +80,24 @@
   color: #333;
   /* text-align: left; */
 }
+
+.payment__wrapper {
+  margin: 12px 0;
+}
+
+.payment__wrapper label {
+  min-width: 100px;
+}
+
+.payment__wrapper input {
+  min-width: 500px;
+  border: 1px solid #ccc;
+  border-radius: 2px;
+  outline: none;
+}
+
+.payment__wrapper p {
+  margin-top: 4px;
+  padding-left: 100px;
+  color: #f31c1c;
+}

@@ -1,0 +1,40 @@
+.footer {
+  background-color: #f8f8f3;
+}
+
+.footer__wrapper {
+  display: flex;
+}
+
+.footer__item {
+  display: flex;
+  justify-content: space-evenly;
+  padding-top: 12px;
+  border-right: 1px solid #ccc;
+}
+
+.footer__item:last-child {
+  border: none;
+}
+
+.footer__img {
+  width: 50px;
+  height: 35px;
+  margin-right: 12px;
+}
+
+.footer__title {
+  font-size: 0.9rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+  opacity: 0.8;
+}
+
+.footer__content {
+  font-size: 0.8rem;
+}
+
+.footer__description {
+  font-size: 0.8rem;
+  margin: 20px 0;
+}
