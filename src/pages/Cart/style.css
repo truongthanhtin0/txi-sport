@@ -1,12 +1,12 @@
 .cart__img {
-  height: 50px;
-  width: 50px;
+  height: 60px;
+  width: 60px;
   object-fit: cover;
   margin-right: 8px;
 }
 
 .cart__name {
-  width: 600px;
+  font-size: 0.9rem;
 }
 
 td {
@@ -53,6 +53,13 @@ td {
   font-size: 1.2rem;
 }
 
-.modal__name {
-  font-size: 0.9rem;
+.modal__name,
+.modal__price {
+  font-size: 0.8rem;
+}
+
+.img__border {
+  padding: 1px;
+  border-radius: 4px;
+  box-shadow: 0 0 0 1px #eee;
 }

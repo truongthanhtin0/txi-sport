@@ -1,6 +1,7 @@
 import React from "react";
 import {Card, Container, Row} from "react-bootstrap";
 import banner from "../../assets/image/banner.jpg";
+import {formatCurrency} from "../../util/formatCurrency";
 import history from "./../../util/history";
 import Pagination from "./Pagination";
 
@@ -30,17 +31,10 @@ function ProductList({products, count, filters, handleChangePagination}) {
                 </Card.Title>
                 <div className="price">
                   <h6 className="oldPrice me-2">
-                    {product.oldPrice &&
-                      new Intl.NumberFormat("vi-VN", {
-                        style: "currency",
-                        currency: "VND",
-                      }).format(product.oldPrice)}
+                    {product.oldPrice && formatCurrency(product.oldPrice)}
                   </h6>
                   <h6 className="currentPrice ms-2">
-                    {new Intl.NumberFormat("vi-VN", {
-                      style: "currency",
-                      currency: "VND",
-                    }).format(product.currentPrice)}
+                    {formatCurrency(product.currentPrice)}
                   </h6>
                 </div>
               </Card.Body>

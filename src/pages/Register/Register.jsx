@@ -1,14 +1,35 @@
-import {ErrorMessage, Field, Form, Formik} from "formik";
+import {Form, Formik} from "formik";
 import React, {useEffect} from "react";
 import {Button} from "react-bootstrap";
 import {connect} from "react-redux";
-import {ToastContainer} from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import * as Yup from "yup";
+import InputField from "../../components/InputField/InputField";
 import history from "../../util/history";
 import {toastError} from "../../util/toast";
 import {createAccount, getListAccount} from "./../../redux/actions";
 import "./style.css";
+
+const infoData = [
+  {
+    id: 1,
+    label: "Họ và tên",
+    name: "name",
+    placeholder: "Họ và tên",
+  },
+  {
+    id: 2,
+    label: "Tài khoản",
+    name: "userName",
+    placeholder: "Tài khoản",
+  },
+  {
+    id: 3,
+    label: "Mật khẩu",
+    name: "password",
+    type: "password",
+    placeholder: "Mật khẩu",
+  },
+];
 
 function Register({createAccount, getList, getListAccount}) {
   useEffect(() => {
@@ -65,28 +86,17 @@ function Register({createAccount, getList, getListAccount}) {
         })}
         onSubmit={(value) => handleClickRegister(value)}
       >
-        <Form>
-          <div className="account__wrapper">
-            <label htmlFor="name">Họ và tên</label>
-            <Field id="name" type="text" name="name" />
-            <p>
-              <ErrorMessage name="name" />
-            </p>
-          </div>
-          <div className="account__wrapper">
-            <label htmlFor="userName">Tài khoản</label>
-            <Field id="userName" type="text" name="userName" />
-            <p>
-              <ErrorMessage name="userName" />
-            </p>
-          </div>
-          <div className="account__wrapper">
-            <label htmlFor="password">Mật khẩu</label>
-            <Field id="password" type="password" name="password" />
-            <p>
-              <ErrorMessage name="password" />
-            </p>
-          </div>
+        <Form className="account__form">
+          {infoData.map((item) => (
+            <div className="field" key={item.id}>
+              <InputField
+                label={item.label}
+                name={item.name}
+                type={item.text}
+                placeholder={item.placeholder}
+              />
+            </div>
+          ))}
           <p className="account__description">
             Bạn đã có tài khoản?
             <span onClick={() => history.push("/login")}> Đăng nhập</span>
@@ -98,7 +108,6 @@ function Register({createAccount, getList, getListAccount}) {
           </div>
         </Form>
       </Formik>
-      <ToastContainer className="mt-3" />
     </section>
   );
 }

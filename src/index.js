@@ -1,10 +1,10 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import React from "react";
 import ReactDOM from "react-dom";
-import { Provider } from "react-redux";
-import { Router } from "react-router-dom";
+import {Provider} from "react-redux";
+import {Router} from "react-router-dom";
 import history from "./util/history";
-import { applyMiddleware, createStore } from "redux";
+import {applyMiddleware, createStore} from "redux";
 import logger from "redux-logger";
 import createSagaMiddleware from "redux-saga";
 import App from "./App";

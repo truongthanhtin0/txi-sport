@@ -2,6 +2,11 @@
   margin: 50px 0;
 }
 
+.account__form {
+  width: 350px;
+  margin: 0 auto;
+}
+
 .account__description {
   margin: 8px 0;
 }
@@ -13,26 +18,4 @@
 
 .account__description span:hover {
   text-decoration: underline;
-}
-
-.account__wrapper {
-  margin: 12px 0;
-}
-
-.account__wrapper label {
-  min-width: 70px;
-  margin-right: 12px;
-}
-
-.account__wrapper input {
-  min-width: 300px;
-  border: 1px solid #ccc;
-  border-radius: 2px;
-  outline: none;
-}
-
-.account__wrapper p {
-  margin-top: 4px;
-  padding-left: 10px;
-  color: #f31c1c;
 }

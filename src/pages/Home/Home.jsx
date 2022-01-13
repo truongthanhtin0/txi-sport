@@ -5,6 +5,7 @@ import {connect} from "react-redux";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
+import {formatCurrency} from "../../util/formatCurrency";
 import history from "../../util/history";
 import {getHome, setCollection} from "./../../redux/actions/home_action";
 import "./style.css";
@@ -65,17 +66,11 @@ function Home({getHome, setCollection, homeData}) {
                     <div className="d-flex align-items-center justify-content-center">
                       {hot.oldPrice && (
                         <p className="hot__oldPrice me-2">
-                          {new Intl.NumberFormat("vi-VN", {
-                            style: "currency",
-                            currency: "VND",
-                          }).format(hot.oldPrice)}
+                          {formatCurrency(hot.oldPrice)}
                         </p>
                       )}
                       <p className="hot__currentPrice ms-2">
-                        {new Intl.NumberFormat("vi-VN", {
-                          style: "currency",
-                          currency: "VND",
-                        }).format(hot.currentPrice)}
+                        {formatCurrency(hot.currentPrice)}
                       </p>
                     </div>
                   </div>

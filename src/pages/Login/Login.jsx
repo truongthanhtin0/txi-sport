@@ -1,9 +1,9 @@
-import {ErrorMessage, Field, Form, Formik} from "formik";
+import {Form, Formik} from "formik";
 import React, {useEffect} from "react";
 import {Button} from "react-bootstrap";
 import {connect} from "react-redux";
-import {ToastContainer} from "react-toastify";
 import * as Yup from "yup";
+import InputField from "../../components/InputField/InputField";
 import {getListAccount, setAccount} from "../../redux/actions";
 import history from "../../util/history";
 import {toastError, toastSuccess} from "./../../util/toast";
@@ -58,20 +58,21 @@ function Login({setAccount, getList, getListAccount}) {
         })}
         onSubmit={(value) => handleOnclickLogin(value)}
       >
-        <Form>
-          <div className="account__wrapper">
-            <label htmlFor="userName">Tài khoản</label>
-            <Field id="userName" type="text" name="userName" />
-            <p>
-              <ErrorMessage name="userName" />
-            </p>
+        <Form className="account__form">
+          <div className="field">
+            <InputField
+              label="Tài khoản"
+              name="userName"
+              placeholder="Tài khoản"
+            />
           </div>
-          <div className="account__wrapper">
-            <label htmlFor="password">Mật khẩu</label>
-            <Field id="password" type="password" name="password" />
-            <p>
-              <ErrorMessage name="password" />
-            </p>
+          <div className="field">
+            <InputField
+              label="Mật khẩu"
+              name="password"
+              type="password"
+              placeholder="Mật khẩu"
+            />
           </div>
           <p className="account__description">
             Bạn chưa có tài khoản?
@@ -84,7 +85,6 @@ function Login({setAccount, getList, getListAccount}) {
           </div>
         </Form>
       </Formik>
-      <ToastContainer />
     </section>
   );
 }

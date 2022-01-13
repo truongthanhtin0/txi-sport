@@ -20,6 +20,7 @@ function* createBill(action) {
       payload: data,
     });
     localStorage.removeItem("productsList");
+    localStorage.setItem("bill", JSON.stringify(data));
     toastSuccess("Thanh toán thành công!");
     history.push("/bill");
   } catch (error) {

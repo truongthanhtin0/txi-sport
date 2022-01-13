@@ -3,27 +3,32 @@ import {Button, Container, Modal, Row} from "react-bootstrap";
 import {connect} from "react-redux";
 import {Link} from "react-router-dom";
 import {setCart} from "../../redux/actions/cart_action";
+import {formatCurrency} from "../../util/formatCurrency";
 import "./style.css";
 
 function Cart({setCart}) {
   const [cartData, setCartData] = useState(
     JSON.parse(localStorage.getItem("productsList"))
   );
-  console.log("Log :  cartData", cartData);
 
-  const [value, setValue] = useState({id: null, image: null, name: null});
-  console.log("Log :  value", value);
+  const [value, setValue] = useState({
+    id: null,
+    image: null,
+    name: null,
+    currentPrice: null,
+  });
 
   const [show, setShow] = useState({
     isActive: false,
     id: null,
     image: null,
     name: null,
+    currentPrice: null,
   });
 
   const handleClose = () => setShow({isActive: false, id: null});
-  const handleShow = (id, image, name) =>
-    setShow({isActive: true, id, image, name});
+  const handleShow = (id, image, name, currentPrice) =>
+    setShow({isActive: true, id, image, name, currentPrice});
 
   const handleDeleteItem = (productId) => {
     const newCartData = cartData.filter((item) => item.id !== productId);
@@ -49,14 +54,12 @@ function Cart({setCart}) {
     quantity = parseInt(quantity);
     if (isNaN(quantity)) handleUpdate("");
     else if (quantity <= 0) {
-      handleShow(value.id, value.image, value.name);
+      handleShow(value.id, value.image, value.name, value.currentPrice);
       handleUpdate(1);
     } else if (quantity > 0 && quantity < 10) {
       handleUpdate(Number(quantity));
     } else if (quantity >= 10) {
-      console.log("quantity không đc lớn hơn 10");
       handleUpdate(9);
-      // handleShow();
     }
   };
 
@@ -76,7 +79,7 @@ function Cart({setCart}) {
               <thead>
                 <tr>
                   <th>Hình ảnh</th>
-                  <th className="cart__name">Tên sản phẩm</th>
+                  <th>Tên sản phẩm</th>
                   <th>Số lượng</th>
                   <th>Giá tiền</th>
                   <th></th>
@@ -109,17 +112,17 @@ function Cart({setCart}) {
                         }
                       />
                     </td>
-                    <td>
-                      {new Intl.NumberFormat("vi-VN", {
-                        style: "currency",
-                        currency: "VND",
-                      }).format(item.currentPrice)}
-                    </td>
+                    <td>{formatCurrency(item.currentPrice)}</td>
                     <td>
                       <Button
                         className="btn btn-primary"
                         onClick={() => {
-                          handleShow(item.id, item.image[0].src, item.name);
+                          handleShow(
+                            item.id,
+                            item.image[0].src,
+                            item.name,
+                            item.currentPrice
+                          );
                         }}
                       >
                         Xóa
@@ -151,8 +154,13 @@ function Cart({setCart}) {
         </Modal.Header>
         <Modal.Body>
           <div className="d-flex align-items-center">
-            <img src={show.image} alt="" className="cart__img me-4" />
+            <img
+              src={show.image}
+              alt=""
+              className="cart__img me-4 img__border"
+            />
             <p className="modal__name">{show.name}</p>
+            <p className="modal__price">{formatCurrency(show.currentPrice)}</p>
           </div>
         </Modal.Body>
         <Modal.Footer>

@@ -3,8 +3,6 @@ import {Button, Col, Container, Row} from "react-bootstrap";
 import {FcCheckmark} from "react-icons/fc";
 import {connect} from "react-redux";
 import Slider from "react-slick";
-import {ToastContainer} from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
 import {setCart} from "../../redux/actions/cart_action";
@@ -12,6 +10,7 @@ import {toastSuccess} from "../../util/toast";
 import {getProductsDetail} from "./../../redux/actions/productsDetail_action";
 import history from "./../../util/history";
 import "./style.css";
+import {formatCurrency} from "./../../util/formatCurrency";
 
 function ProductsDetail({getProductsDetail, productsDetail, match, setCart}) {
   const [indexImg, setIndexImg] = useState(0);
@@ -108,21 +107,14 @@ function ProductsDetail({getProductsDetail, productsDetail, match, setCart}) {
               />
             </Col>
             <Col xs={12} md={6} className="detail my-3">
-              <ToastContainer className="mt-3 --toastify-color-info" />
               <h3 className="detail__name">{productsDetail.name}</h3>
               <div className="wrapper">
                 <h6 className="detail__oldPrice me-2">
                   {productsDetail.oldPrice &&
-                    new Intl.NumberFormat("vi-VN", {
-                      style: "currency",
-                      currency: "VND",
-                    }).format(productsDetail.oldPrice)}
+                    formatCurrency(productsDetail.oldPrice)}
                 </h6>
                 <h6 className="detail__currentPrice ms-2">
-                  {new Intl.NumberFormat("vi-VN", {
-                    style: "currency",
-                    currency: "VND",
-                  }).format(productsDetail.currentPrice)}
+                  {formatCurrency(productsDetail.currentPrice)}
                 </h6>
               </div>
               <p className="detail__trademark">
