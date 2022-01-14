@@ -1,0 +1,29 @@
+.bill {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 40px;
+  box-shadow: 0 0 0 1px #ccc;
+  border-radius: 4px;
+}
+
+.bill__title {
+  font-size: 2rem;
+  margin: 0;
+}
+
+.bill__code {
+  font-size: 1.4rem;
+}
+
+.bill__price {
+  font-size: 0.9rem;
+}
+
+.bill p {
+  margin: 8px 0;
+}
+
+.bill__wrapper {
+  max-width: 250px;
+  margin-left: auto;
+}

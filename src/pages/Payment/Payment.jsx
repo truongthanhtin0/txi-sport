@@ -1,14 +1,13 @@
-import {ErrorMessage, Field, Form, Formik} from "formik";
+import {Form, Formik} from "formik";
 import React, {useState} from "react";
 import {Button} from "react-bootstrap";
 import {BiChevronLeft, BiChevronRight} from "react-icons/bi";
 import {connect} from "react-redux";
 import {Link} from "react-router-dom";
 import * as Yup from "yup";
-import {dateTimeNow} from "../../util/dateTime";
+import InputField from "../../components/InputField/InputField";
 import {createBill} from "./../../redux/actions";
 import "./style.css";
-import InputField from "../../components/InputField/InputField";
 
 const infoData = [
   {
@@ -34,11 +33,30 @@ const infoData = [
   },
 ];
 
+const checkData = [
+  {
+    id: 1,
+    label: "Chuyển khoản ngân hàng",
+  },
+  {
+    id: 2,
+    label: "Thử giày - Thanh toán tại nhà (Ship COD)",
+  },
+  {
+    id: 3,
+    label: "Thanh toán trực tiếp tại cửa hàng",
+  },
+];
+
 function Payment({createBill}) {
+  const [checked, setChecked] = useState(1);
+
   const [productsLocal, setProductsLocal] = useState(
     JSON.parse(localStorage.getItem("productsList"))
   );
   const [info, setInfo] = useState(JSON.parse(localStorage.getItem("info")));
+
+  const [bill, setBill] = useState(JSON.parse(localStorage.getItem("bill")));
 
   const phoneRegExp =
     /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
@@ -64,24 +82,23 @@ function Payment({createBill}) {
       address: value.address,
       products: productsLocal,
       total: handleTotal(),
-      datetime: dateTimeNow(),
-      status: "Đang duyệt",
+      payment: checked,
     });
   };
 
   return (
     <section className="payment">
       <h3>TXI-SPORT</h3>
-      <div className="d-flex align-items-center checkout__description">
+      <div className="d-flex align-items-center payment__description">
         <Link to="/cart" className="text-decoration-none">
           Giỏ hàng
         </Link>
         <BiChevronRight />
         <p>Thông tin giao hàng</p>
       </div>
-      <h6 className="checkout__title">Thông tin giao hàng</h6>
+      <h6 className="payment__title">Thông tin giao hàng</h6>
       {!info && (
-        <div className="d-flex align-items-center checkout__description1">
+        <div className="d-flex align-items-center payment__description">
           <p className="me-2">Bạn đã có tài khoản</p>
           <Link to="/login" className="text-decoration-none">
             Đăng nhập
@@ -90,10 +107,10 @@ function Payment({createBill}) {
       )}
       <Formik
         initialValues={{
-          name: info?.name || "",
-          email: "",
-          phone: "",
-          address: "",
+          name: bill?.name || info?.name || "",
+          email: bill?.email || "",
+          phone: bill?.phone || "",
+          address: bill?.address || "",
         }}
         enableReinitialize
         validationSchema={Yup.object({
@@ -124,44 +141,23 @@ function Payment({createBill}) {
               />
             </div>
           ))}
-          <h6 className="checkout__title">Phương thức thanh toán</h6>
+          <h6 className="payment__title">Phương thức thanh toán</h6>
           <div className="payment__check">
-            <div class="form-check payment__check--item">
-              <input
-                class="form-check-input"
-                type="radio"
-                name="flexRadioDefault"
-                id="flexRadioDefault1"
-                disabled
-              />
-              <label class="form-check-label" for="flexRadioDefault1">
-                Chuyển khoản ngân hàng
-              </label>
-            </div>
-            <div class="form-check payment__check--item">
-              <input
-                class="form-check-input"
-                type="radio"
-                name="flexRadioDefault"
-                id="flexRadioDefault2"
-                checked
-              />
-              <label class="form-check-label" for="flexRadioDefault2">
-                Thử giày - Thanh toán tại nhà (Ship COD)
-              </label>
-            </div>
-            <div class="form-check payment__check--item">
-              <input
-                class="form-check-input"
-                type="radio"
-                name="flexRadioDefault"
-                id="flexRadioDefault2"
-                checked
-              />
-              <label class="form-check-label" for="flexRadioDefault2">
-                Thanh toán trực tiếp tại cửa hàng
-              </label>
-            </div>
+            {checkData.map((item, index) => (
+              <div className="form-check payment__check--item" key={index}>
+                <input
+                  className="form-check-input"
+                  type="radio"
+                  name="flexRadioDefault"
+                  id={item.id}
+                  checked={item.id === checked}
+                  onChange={() => setChecked(item.id)}
+                />
+                <label className="form-check-label" htmlFor={item.id}>
+                  {item.label}
+                </label>
+              </div>
+            ))}
           </div>
           <div className="d-flex align-items-center justify-content-between">
             <div className="d-flex align-items-center">
@@ -171,7 +167,7 @@ function Payment({createBill}) {
               </Link>
             </div>
             <Button htmlType="submit" type="primary">
-              Hoàn tất thanh toán
+              Tiếp tục thanh toán
             </Button>
           </div>
         </Form>

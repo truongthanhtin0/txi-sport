@@ -4,24 +4,15 @@
   text-align: left;
 }
 
-.checkout__description {
-  font-size: 0.8rem;
-}
-
-.checkout__description1 {
+.payment__description {
   font-size: 0.9rem;
-  margin-bottom: 8px;
 }
 
-.checkout__title {
+.payment__title {
   margin: 16px 0;
   font-size: 1.2rem;
   font-weight: normal;
   color: #333;
-}
-
-.checkout__radioButton {
-  font-size: 0.9rem;
 }
 
 .payment__check {
@@ -40,4 +31,8 @@
 
 .payment__check--item:last-child {
   border-top: 1px solid #ccc;
+}
+
+.form-check-input {
+  cursor: pointer;
 }

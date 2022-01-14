@@ -42,9 +42,17 @@ function Header({cart, account, setAccount}) {
                       Đăng ký
                     </Link>
                   </li>
-                  <li>Giỏ hàng</li>
-                  <li>Thanh toán</li>
-                  <li>Tra cứu đơn hàng</li>
+                  <li>
+                    <Link to="/cart" className="header__login__link">
+                      Giỏ hàng
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/payment" className="header__login__link">
+                      Thanh toán
+                    </Link>
+                  </li>
+                  <li className="header__login__link">Lịch sử mua hàng</li>
                 </ul>
               </div>
             ) : (

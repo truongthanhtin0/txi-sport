@@ -71,6 +71,7 @@
 .header__img {
   height: 60px;
   width: 200px;
+  cursor: pointer;
 }
 
 .header__icon {

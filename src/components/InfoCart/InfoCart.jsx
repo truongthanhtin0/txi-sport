@@ -41,15 +41,15 @@ function InfoCart(props) {
         ))}
       </div>
       <div className="checkout__border mt-4">
-        <div class="input-group mb-3 pt-1">
+        <div className="input-group mb-3 pt-1">
           <input
             type="text"
-            class="form-control"
+            className="form-control"
             placeholder="Mã giảm giá"
             aria-label="Recipient's username"
             aria-describedby="basic-addon2"
           />
-          <span class="input-group-text" id="basic-addon2">
+          <span className="input-group-text" id="basic-addon2">
             Áp dụng
           </span>
         </div>
@@ -61,7 +61,7 @@ function InfoCart(props) {
         </div>
         <div className="checkout__wrapper">
           <p className="checkout__description1">Phí vận chuyển:</p>
-          <p className="checkout__price">Miễn phí</p>
+          <p className="checkout__price">{formatCurrency(0)}</p>
         </div>
       </div>
       <div className="checkout__border mt-4">

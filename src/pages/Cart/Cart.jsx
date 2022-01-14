@@ -66,7 +66,7 @@ function Cart({setCart}) {
   return (
     <Container>
       <Row className="my-5">
-        <table class="table table-bordered">
+        <table className="table table-bordered">
           <thead>
             <tr>
               <th colSpan="5" className="text-start">

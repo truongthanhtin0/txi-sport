@@ -3,6 +3,7 @@ import {put, takeEvery} from "redux-saga/effects";
 import axios from "axios";
 import history from "../../util/history";
 import {toastSuccess} from "../../util/toast";
+import {dateTimeNow} from "../../util/dateTime";
 
 const url = "http://localhost:3002";
 
@@ -11,6 +12,8 @@ function* createBill(action) {
     const response = yield axios.post(`${url}/payments`, {
       ...action.payload,
       isPayment: false,
+      datetime: dateTimeNow(),
+      status: "Đang duyệt",
     });
 
     const data = response.data;
@@ -19,10 +22,9 @@ function* createBill(action) {
       type: CREATE_BILL_SUCCESS,
       payload: data,
     });
-    localStorage.removeItem("productsList");
     localStorage.setItem("bill", JSON.stringify(data));
-    toastSuccess("Thanh toán thành công!");
-    history.push("/bill");
+    toastSuccess("Đặt hàng thành công!");
+    history.push("/checkout");
   } catch (error) {
     yield put({
       type: CREATE_BILL_FAIL,

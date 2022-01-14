@@ -9,7 +9,6 @@ import axios from "axios";
 const url = "http://localhost:3002";
 
 function* productsSagaList(action) {
-  console.log("Log :  action", action);
   try {
     const [responseCategory, responseProducts] = yield all([
       axios({

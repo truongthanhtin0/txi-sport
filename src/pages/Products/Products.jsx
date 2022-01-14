@@ -24,7 +24,6 @@ function Products({getProducts, collection, setCollection, productsData}) {
       playerPosition: collection.playerPosition,
     }),
   });
-  console.log("Log :  filters", filters);
 
   useEffect(() => {
     getProducts(queryString.stringify(filters));
