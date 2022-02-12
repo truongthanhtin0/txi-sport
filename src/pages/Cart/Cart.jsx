@@ -66,11 +66,11 @@ function Cart({setCart}) {
   return (
     <Container>
       <Row className="my-5">
-        <table className="table table-bordered">
+        <table className="table table-bordered table__border">
           <thead>
             <tr>
               <th colSpan="5" className="text-start">
-                <h5>GIỎ HÀNG</h5>
+                <h5 className="table__title">GIỎ HÀNG</h5>
               </th>
             </tr>
           </thead>

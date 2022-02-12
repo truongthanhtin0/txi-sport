@@ -9,6 +9,22 @@ import history from "../../util/history";
 import {toastError, toastSuccess} from "./../../util/toast";
 import "./style.css";
 
+const infoData = [
+  {
+    id: 1,
+    label: "Tài khoản",
+    name: "userName",
+    placeholder: "Tài khoản",
+  },
+  {
+    id: 2,
+    label: "Mật khẩu",
+    name: "password",
+    type: "password",
+    placeholder: "Mật khẩu",
+  },
+];
+
 function Login({setAccount, getList, getListAccount}) {
   useEffect(() => {
     getListAccount();
@@ -59,21 +75,11 @@ function Login({setAccount, getList, getListAccount}) {
         onSubmit={(value) => handleOnclickLogin(value)}
       >
         <Form className="account__form">
-          <div className="field">
-            <InputField
-              label="Tài khoản"
-              name="userName"
-              placeholder="Tài khoản"
-            />
-          </div>
-          <div className="field">
-            <InputField
-              label="Mật khẩu"
-              name="password"
-              type="password"
-              placeholder="Mật khẩu"
-            />
-          </div>
+          {infoData.map((item) => (
+            <div className="field" key={item.id}>
+              <InputField item={item} />
+            </div>
+          ))}
           <p className="account__description">
             Bạn chưa có tài khoản?
             <span onClick={() => history.push("/register")}> Đăng ký</span>

@@ -4,7 +4,9 @@ import DefaultLayout from "./layout/DefaultLayout";
 import PaymentLayout from "./layout/PaymentLayout";
 import Bill from "./pages/Bill/Bill";
 import Cart from "./pages/Cart/Cart";
+import CheckOrder from "./pages/CheckOrder/CheckOrder";
 import Checkout from "./pages/Checkout/Checkout";
+import HistoryOrder from "./pages/HistoryOrder/HistoryOrder";
 import Home from "./pages/Home/Home";
 import Login from "./pages/Login/Login";
 import Payment from "./pages/Payment/Payment";
@@ -24,6 +26,8 @@ function App() {
         <DefaultLayout exact path="/products/:id" component={ProductsDetail} />
         <DefaultLayout exact path="/cart" component={Cart} />
         <DefaultLayout exact path="/bill" component={Bill} />
+        <DefaultLayout exact path="/check-order" component={CheckOrder} />
+        <DefaultLayout exact path="/history-order" component={HistoryOrder} />
 
         <PaymentLayout exact path="/payment" component={Payment} />
         <PaymentLayout exact path="/checkout" component={Checkout} />

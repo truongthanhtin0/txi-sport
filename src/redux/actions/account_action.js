@@ -2,7 +2,7 @@ import {
   CREATE_ACCOUNT,
   SET_ACCOUNT,
   GET_LIST_ACCOUNT,
-  LOGIN,
+  GET_BILL_BY_USERNAME,
 } from "../constants";
 
 export function setAccount(params) {
@@ -19,16 +19,16 @@ export function createAccount(params) {
   };
 }
 
-export function login(params) {
+export function getListAccount(params) {
   return {
-    type: LOGIN,
+    type: GET_LIST_ACCOUNT,
     payload: params,
   };
 }
 
-export function getListAccount(params) {
+export function getBillByUsername(params) {
   return {
-    type: GET_LIST_ACCOUNT,
+    type: GET_BILL_BY_USERNAME,
     payload: params,
   };
 }

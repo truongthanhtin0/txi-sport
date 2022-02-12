@@ -1,0 +1,62 @@
+.check-order {
+  margin: 40px;
+}
+
+.check__title {
+  text-align: left;
+  padding: 16px;
+  border-bottom: 1px solid #ccc;
+}
+
+.check__wrapper {
+  padding: 8px 16px;
+  color: #fff;
+  background-color: #20b1e3;
+}
+
+.check__wrapper p {
+  margin: 8px 0;
+  font-size: 0.9rem;
+  text-align: left;
+}
+
+.check__recaptcha {
+  margin: 12px auto;
+  text-align: center;
+}
+
+.check__subtitle {
+  font-size: 1.1rem;
+}
+
+.check__input {
+  font-size: 0.9rem;
+}
+
+/* --------------- */
+.list__item p {
+  font-size: 0.8rem;
+}
+
+.list__icon--ship {
+  font-size: 1.1rem;
+}
+
+.list__item--item {
+  border-bottom: 1px solid #ccc;
+}
+
+.list__item--item:last-child {
+  border-bottom: none;
+}
+
+.list__like {
+  padding: 1px 2px;
+  color: #fff;
+  background-color: #0d6efd;
+}
+
+.list-order .list__total {
+  font-size: 1.2rem;
+  font-weight: 500;
+}

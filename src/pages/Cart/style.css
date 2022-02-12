@@ -63,3 +63,13 @@ td {
   border-radius: 4px;
   box-shadow: 0 0 0 1px #eee;
 }
+
+.table__title {
+  padding-top: 8px;
+  padding-left: 8px;
+}
+
+.table__border {
+  box-shadow: 0px 0px 5px 1px rgb(0 0 0 / 10%);
+  border-radius: 2px;
+}

@@ -52,7 +52,11 @@ function Header({cart, account, setAccount}) {
                       Thanh toán
                     </Link>
                   </li>
-                  <li className="header__login__link">Lịch sử mua hàng</li>
+                  <li>
+                    <Link to="/check-order" className="header__login__link">
+                      Tra cứu đơn hàng
+                    </Link>
+                  </li>
                 </ul>
               </div>
             ) : (
@@ -60,9 +64,26 @@ function Header({cart, account, setAccount}) {
                 <span>{`Hi, ${account?.name || info?.name}`}</span>
 
                 <ul className="header__login--item">
-                  <li>Giỏ hàng</li>
-                  <li>Thanh toán</li>
-                  <li>Tra cứu đơn hàng</li>
+                  <li>
+                    <Link to="/cart" className="header__login__link">
+                      Giỏ hàng
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/payment" className="header__login__link">
+                      Thanh toán
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/history-order" className="header__login__link">
+                      Lịch sử mua hàng
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/check-order" className="header__login__link">
+                      Tra cứu đơn hàng
+                    </Link>
+                  </li>
                   <li
                     onClick={() => {
                       localStorage.removeItem("info");

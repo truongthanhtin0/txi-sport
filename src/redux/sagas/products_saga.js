@@ -29,12 +29,6 @@ function* productsSagaList(action) {
       },
     };
 
-    // const categoryList = [...responseCategory.data];
-    // const productsList = [
-    //   [...responseProductsList.data],
-    //   responseProductsList.headers["x-total-count"],
-    // ];
-
     yield put({
       type: GET_PRODUCTS_SUCCESS,
       payload: data,

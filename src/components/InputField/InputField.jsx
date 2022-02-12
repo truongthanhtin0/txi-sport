@@ -2,18 +2,18 @@ import {ErrorMessage, Field} from "formik";
 import React from "react";
 import "./style.css";
 
-function InputField({label, name, type, placeholder}) {
+function InputField({item}) {
   return (
     <>
-      {label && <label htmlFor={name}>{label}</label>}
+      {item.label && <label htmlFor={item.name}>{item.label}</label>}
       <Field
-        id={name}
-        type={type ? type : "text"}
-        name={name}
-        placeholder={placeholder && placeholder}
+        id={item.name}
+        type={item.type ? item.type : "text"}
+        name={item.name}
+        placeholder={item.placeholder && item.placeholder}
       />
       <p>
-        <ErrorMessage name={name} />
+        <ErrorMessage name={item.name} />
       </p>
     </>
   );

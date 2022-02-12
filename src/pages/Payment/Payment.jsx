@@ -6,6 +6,7 @@ import {connect} from "react-redux";
 import {Link} from "react-router-dom";
 import * as Yup from "yup";
 import InputField from "../../components/InputField/InputField";
+import InputRadio from "../../components/InputRadio/InputRadio";
 import {createBill} from "./../../redux/actions";
 import "./style.css";
 
@@ -37,14 +38,17 @@ const checkData = [
   {
     id: 1,
     label: "Chuyển khoản ngân hàng",
+    status: "Payment",
   },
   {
     id: 2,
     label: "Thử giày - Thanh toán tại nhà (Ship COD)",
+    status: "Payment",
   },
   {
     id: 3,
     label: "Thanh toán trực tiếp tại cửa hàng",
+    status: "Payment",
   },
 ];
 
@@ -83,6 +87,7 @@ function Payment({createBill}) {
       products: productsLocal,
       total: handleTotal(),
       payment: checked,
+      user: info,
     });
   };
 
@@ -134,28 +139,18 @@ function Payment({createBill}) {
         <Form>
           {infoData.map((item) => (
             <div className="field" key={item.id}>
-              <InputField
-                name={item.name}
-                type={item.type}
-                placeholder={item.placeholder}
-              />
+              <InputField item={item} />
             </div>
           ))}
           <h6 className="payment__title">Phương thức thanh toán</h6>
           <div className="payment__check">
-            {checkData.map((item, index) => (
-              <div className="form-check payment__check--item" key={index}>
-                <input
-                  className="form-check-input"
-                  type="radio"
-                  name="flexRadioDefault"
-                  id={item.id}
-                  checked={item.id === checked}
-                  onChange={() => setChecked(item.id)}
+            {checkData.map((item) => (
+              <div className="form-check payment__check--item" key={item.id}>
+                <InputRadio
+                  item={item}
+                  checked={checked}
+                  setChecked={setChecked}
                 />
-                <label className="form-check-label" htmlFor={item.id}>
-                  {item.label}
-                </label>
               </div>
             ))}
           </div>

@@ -89,12 +89,7 @@ function Register({createAccount, getList, getListAccount}) {
         <Form className="account__form">
           {infoData.map((item) => (
             <div className="field" key={item.id}>
-              <InputField
-                label={item.label}
-                name={item.name}
-                type={item.text}
-                placeholder={item.placeholder}
-              />
+              <InputField item={item} />
             </div>
           ))}
           <p className="account__description">

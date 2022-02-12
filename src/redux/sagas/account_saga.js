@@ -33,24 +33,6 @@ function* createAccountSaga(action) {
   }
 }
 
-// function* loginSaga(action) {
-//   try {
-//     const response = yield axios.get(`${url}/accounts`, {...action.payload});
-
-//     const data = response.data;
-
-//     yield put({
-//       type: CREATE_ACCOUNT_SUCCESS,
-//       payload: data,
-//     });
-//   } catch (error) {
-//     yield put({
-//       type: CREATE_ACCOUNT_FAIL,
-//       payload: error,
-//     });
-//   }
-// }
-
 function* getListAccountSaga(action) {
   try {
     const response = yield axios.get(`${url}/accounts`);
